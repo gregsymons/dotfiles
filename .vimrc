@@ -7,7 +7,7 @@ set bs=eol,indent,start
 set ruler
 set ai
 set si
-set guifont=DPCustomMono2:h12:cANSI
+set guifont=DPCustomMono2\ 10
 set tags=
 set path=
 set autowrite
