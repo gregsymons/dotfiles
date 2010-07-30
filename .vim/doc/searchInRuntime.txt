@@ -1,0 +1,180 @@
+*searchInRuntime.txt*	Plugin for searching within list of directories
+			For Vim version 6.0.	Last change: 29th mar 2003
+
+
+				By Luc Hermitte
+				<hermitte {at} free {dot} fr>
+
+
+------------------------------------------------------------------------------
+Contents~
+|SiR-presentation|	Presentation
+  |SiR-parameters|	Parameters of the three :SearchIn* commands.
+  |:SearchInVar|	Command to search into a specified list of directories
+  |:SearchInPATH|	Command to search into $PATH
+  |:SearchInRuntime|	Command to search into 'runtimepath'
+|SiR-examples|		Examples and tips
+|SiR-get|		Where to get this plugin
+|add-local-help|	Instructions on installing this file
+
+
+------------------------------------------------------------------------------
+						*SiR-presentation*
+						*search-in-directories-list* 
+Presentation~
+
+The plugin *searchInRuntime.vim* defines three commands that:
+1- search for files whose name match specified {file-patterns} within list of
+   directories ({var}, $PATH or 'runtimepath').
+2- execute the Ex command {cmd} on the files found, if any.
+
+If you are a worshiper of: >
+    $> find {path} -name {pattern} -exec {command}
+then, you may be interested by these three VIM commands:
+    :SearchInVar[!] {var} {cmd} {file-patterns} .. [ "|[0]" {params} .. ]
+    :SearchInPATH[!]      {cmd} {file-patterns} .. [ "|[0]" {params} .. ]
+    :SearchInRuntime[!]   {cmd} {file-patterns} .. [ "|[0]" {params} .. ]
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+						*SiR-parameters*
+Parameters~
+When [!] is included, all found files are passed to the Ex command {cmd}.
+When it is not included only the first found file is passed to {cmd}.
+
+
+When {file-patterns} contains wildcards, it is expanded to all matching files.
+Example: >
+	:SearchInRuntime! Echo plugin/*.vim
+Will echo the name of all VIM plugins.
+This similar command: >
+	:SearchInRuntime Echo plugin/*.vim
+would echo the name of the first file only.
+
+Contrary to |:runtime|, the search accepts absolute paths ; for instance: >
+    :runtime! /usr/local/share/vim/foo*.vim macros/foo*.vim
+is not valid while: >
+    :SearchInRuntime! source /usr/local/share/vim/foo*.vim macros/foo*.vim
+is accepted. 
+
+
+When 'verbose' is one or higher, there is a message when no file could be found.
+When 'verbose' is two or higher, there is a message about each found file.
+When 'verbose' is three or higher, there is a message about each searched
+directory.
+
+
+Additional parameters~
+When "| {params} .." is passed to :SearchIn*, then for each {file} found,
+:SearchIn* will execute:
+    {cmd} {file} {params} ..
+
+When "|0 {params} .." is passed to :SearchIn*, then for each {file} found,
+:SearchIn* will execute:
+    {cmd} {params} .. {file}
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+						    *:SearchInVar*
+:SearchInVar[!] {var} {cmd} {file-patterns} .. [ "|[0]" {params} .. ]~
+
+
+Important:~
+The variable {var} (containing the list of directories), that :SearchInVar is
+awaiting the name, must be visible outside the current scope. ie.: the variable
+must be a |global-variable|, a |buffer-variable|, a |window-variable|, an
+environment variable, or one of the vim |options| prepended by ampersand like
+"&runtimepath". 
+{var} can not be a |local-variable| nor a |script-variable|.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+						    *:SearchInPATH*
+:SearchInPATH[!] {cmd} {file-patterns} .. [ "|[0]" {params} .. ]~
+is equivalent to:
+    |:SearchInVar|[!] $PATH {cmd} {file-patterns} .. [ "|[0]" {params} .. ]
+
+I.e.: the list of directories is taken from $PATH.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+						    *:SearchInRuntime*
+						    *search-in-runtimepath* 
+:SearchInRuntime {cmd} {file-patterns} .. [ "|[0]" {params} .. ]~
+is equivalent to:
+    |:SearchInVar|[!] &runtimepath {cmd} {file-patterns}.. ["|[0]" {params}..]
+
+I.e.: the list of directories is taken from 'runtimepath'.
+
+And,
+    :SearchInRuntime[!] source {file-patterns} ..
+is equivalent to:
+    |:runtime|[!] {file-patterns} ..
+
+
+------------------------------------------------------------------------------
+						*SiR-examples*
+Examples and tips~
+
+Note: this plugin also defines the command: >
+    :command -nargs=+ Echo echo "<args>" 
+
+
+And now are some of the different ways I use to use this plugin.
+>
+    :SearchInRuntime sp plugin/searchInRuntime.vim 
+<	Will open in a splitted window the source of the file
+	searchInRuntime.vim. 
+	[the full path can be very long and not always the same] 
+>
+    :SearchInVar $INCLUDE sp vector
+<	Will (if $INCLUDE is correctly set) open, in a |:split| window, the C++
+	header file vector.
+>
+    :SearchInVar! $INCLUDE Echo *
+<	Will echo the name of all the files present in the directories specified
+        in $INCLUDE.
+>
+    :SearchInRuntime! Echo *.vim ftplugin/*_set.vim
+<	Will echo the names of all the files, respecting the globing pattern,
+	that can be found in the directories specified by 'runtimepath'.
+>
+    :SearchInRuntime! Echo *.vim ftplugin/*_set.vim | has been found!
+<	Will echo the same files followed by the string "has been found!", on
+	the same line. 
+>
+    :SearchInRuntime! grep plugin/*foo*.vim |0 text
+<	For every {file} named plugin/*foo*.vim found within the 'runtimepath',
+	this will execute: >
+	    :grep text {path-to-the-file}
+>
+    :command -nargs=+ ExeThis exe "!<args> ".bufname('%') 
+    :SearchInRuntime! ExeThis tools/vimlatex
+<	Will search where the executable vimlatex is, and execute it with
+	bufname('%') as a parameter. 
+>
+    :exe ":SearchInRuntime 0r template/template.".&ft 
+<	Will load the content of the file template/template.{filetype} that
+	should be somewhere in the 'runtimepath'. 
+>
+    :command! -nargs=+ MemorizeSiRFiles exe 
+	\ ':let s:SiR_files=s:SiR_files."\n<args>"'
+    :SearchInRuntime! MemorizeSiRFiles 
+	\ plugin/searchInRuntime.vim
+       	\ doc/searchInRuntime.txt
+<	Will build s:SiR_files with the exact paths of the two files
+	searchInRuntime.vim and searchInRuntime.txt.
+	Then, in tar-scripts.vim (on my web site), I use this variable to check
+	if any of the two files has been updated since last check up.
+
+
+------------------------------------------------------------------------------
+						*SiR-get*
+Where to get this plugin~
+
+This plugin can be dowloaded:
+- on my web site: <http://hermitte.free.fr/vim/general.php>
+- on sourceforge: <http://vim.sourceforge.net/scripts/script.php?script_id=229>
+
+
+------------------------------------------------------------------------------
+ © Luc Hermitte, 2001-2002 <http://hermitte.free.fr/vim/>
+ VIM: let b:VS_language = 'american' 
+ vim:ts=8:sw=4:tw=80:fo=tcq2:isk=!-~,^*,^\|,^\":ft=help:

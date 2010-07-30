@@ -1,0 +1,11 @@
+VimL:" «LaTeX: figure» File Template
+VimL:" Luc Hermitte <hermitte at free.fr>, 30th Jul 2003
+VimL:"
+VimL: let s:value_start = '¡'
+VimL: let s:value_end   = '¡'
+VimL: let s:reindent = 1 
+\begin{figure}[¡Marker_Txt('htbp')¡]
+	\centerline{\psfig{figure=¡Marker_Txt('eps file')¡}}
+	\caption{¡Marker_Txt('caption text')¡}
+	\label{fig:¡Marker_Txt('label')¡}
+\end{figure}

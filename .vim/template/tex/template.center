@@ -1,0 +1,9 @@
+VimL:" «LaTeX: center» File Template
+VimL:" Luc Hermitte <hermitte at free.fr>, 30th Jul 2003
+VimL:"
+VimL: let s:value_start = '¡'
+VimL: let s:value_end   = '¡'
+VimL: let s:reindent = 1 
+\begin{center}
+¡Marker_Txt('')¡
+\end{center}

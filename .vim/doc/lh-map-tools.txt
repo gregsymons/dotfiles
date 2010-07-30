@@ -1,0 +1,402 @@
+*lh-map-tools.txt*	Tools for helping mappings-definitions
+			For Vim version 5.7.+	Last change: 17th Sep 2003
+
+		   Map Tools MANUAL	by Luc Hermitte
+
+
+------------------------------------------------------------------------------
+Presentation: ~
+lh-map-tools.tar.gz contains three |plugin|s which define many functions
+and commands that I use to program |mapping|s and |abbreviations|.
+Thus, they are not aimed at final users, but at vim (ft)plugins developers.
+
+Nevertheless, the two bracketing oriented plugins can be integrated very
+easily into your system. The typical way to use them is to copy them into your
+{rtp}/plugin/ directory and customize/define the different |ftplugins| you
+will be confronted to. You could find (complex :-(() applications of this
+bracketing system into my ftplugin files: vim_set.vim, tex-smart_chars.vim,
+ML_set.vim, html_set.vim and |cpp_set.vim|.
+
+Contents~
+|misc_map.vim|		Address the definition of |insert-mode| and
+			|visual-mode| mappings that insert pieces of text like
+			program code.
+|bracketing.base.vim|	Bases of my bracketing system: markers.
+|common_brackets.vim|	Typical pairs of brackets.
+|add-local-help|	Instructions on installing this file
+
+
+------------------------------------------------------------------------------
+							*misc_map.vim*
+misc_map.vim~
+			For Vim version 5.7. and more
+
+This plugin defines several functions and commands to be used when you want to
+program mappings and abbreviations:
+|MapContext()|		for context dependent mappings,
+|MapNoContext()|
+|MapNoContext2()|
+|InsertAroundVisual()|	that inserts a pair of tokens around a visual area,
+|BuildMapSeq()|		that expands mappings contained into strings, 
+|EatChar()|		function that eats the <space> ending abbreviations.
+
+In the future, I will certainly move it to the {rtp}/macros/ directory.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+					*MapNoContext()* *MapNoContext2()*
+MapNoContext({key}, {sequence}) & MapNoContext2({k},{s})~
+
+These two functions enable to define context-dependent macros -- |mapping|s
+and |abbreviations|. Regarding the context of the character under the current
+position of the cursor, the functions return either the {key} or the
+interpreted {sequence}. The {key} is returned when the context corresponds
+either to comments, strings or characters. In a C program, I let you test the
+following mapping within comments, strings or anywhere else: >
+	:Inoreabbr if <C-R>=MapNoContext('if', 
+		\ 'if() {\<CR\>}\<ESC\>?)\<CR\>I')<CR>
+<
+Regarding the difference between the two functions, the second form is
+relevant to define |mapping|s (not |abbreviations|!) when you are up to use
+variables like "tarif".
+Indeed, if the character before the cursor is a 'keyword' character, the key
+is returned instead of the interpreted {sequence} ; cf. 'iskeyword' for more
+information about keyword characters. 
+
+Reserve the first form of the function to "keyword-less" {keys}, like the
+opening curly-bracket for instance, or |abbreviations|.
+
+Regarding the format of the {sequence} to interpret, every special character
+must see its greater-than and lesser-than symbols escaped with
+backslash. Thus <esc> becomes '\<esc\>'.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+						*MapContext()*
+MapContext({key}, {syn-ctx1} {seq1}, {syn-ctx2}, {seq2}, ... [, {default-seq}])~
+
+This function also enables to define context-dependent macros.
+However this function is more precise than |MapNoContext()|.
+
+Regarding the context of the character under the current position of the
+cursor, the function returns either:
+- the {key} if the context is the one of a string, a comment or a character,
+- the interpreted {seq1} if the context is {syn-ctx1}
+- ...
+- the interpreted {default-seq} otherwise.
+
+Try for instance in an HTML file: >
+	:Inoreab if <c-r>=MapContext('if ', 
+	    \ 'javaScript', 'if () {}\<esc\>?)\<cr\>i', 
+	    \ 'vb', 'If\<CR\>Then\<CR\>Endif\<esc\>?If\<CR\>o', 
+	    \ 'if ')<cr>
+<
+Regarding the format of the {sequences} to interpret, every special character
+must see its greater-than and lesser-than symbols escaped with
+backslash. Thus <esc> becomes '\<esc\>'.
+
+Note: Works with 6.x only.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+						*InsertAroundVisual()*
+						*MapAroundVisualLine()*
+InsertAroundVisual({end}, {isLine}, {isIndented})~
+MapAroundVisualLine({begin}, {end}, {isLine}, {isIndented}) [depreciated]~
+
+This helper function is dedicated to the addition of text around visual
+selection. {begin} is added before the selection while {end} is added just
+after. The function accepts two options that indicates whether the mapping
+should be line wise and whether the selected text should be re-indented after
+the operation.
+
+At this time, it is mainly used in my LaTeX plugin in order to define things
+like: >
+	:vnoremap ]ec :call InsertAroundVisual('\begin{center}',
+        \ '\end{center}',1,1)<CR>
+>
+It also fits perfectly to define the C & co. dedicated visual mappings: >
+	:vnoremap ,else :call InsertAroundVisual('else {', '}',1,1)<CR>%
+<
+Rem.: there are still problems with the indenting and more precisely when a
+text is |smartindent|ed under VIM 5.xx ; it seems to work fine with VIM 6.0.
+BTW, never use stuff that could be expanded as an |abbreviation| within
+{begin} or {end}. Unless you like oddities.
+
+Note: this function will correctly work whatever the value of some options
+like 'selection'. Thus, you'd better use this function instead of the
+classical: >
+	:vnoremap <buffer> < <esc>`>a><esc>`<i<<esc>`>ll
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+							*BuildMapSeq()*
+BuildMapSeq( {sequence} )~
+
+This function is aimed at enabling recursive (only one level) context
+dependent mappings. Actually, it expands every mapping of the form
+'!.*!' and build a string that can be used as second parameter by the
+|MapNoContext()| functions.
+The expanded mappings are considered to be dedicated to the |INSERT-mode|.
+
+My first aim for this function was to be able to use |markers| within
+context-dependent macros.
+
+Here is an example of what I have done with some C++ constructs: >
+	:Inoreabbr for <C-R>=Def_Map(
+	    \ 'for', 
+	    \ '\<c-f\>for (;;) {\<cr\>}\<esc\>?(\<cr\>a',
+	    \ '\<c-f\>for (;!mark!;!mark!) '
+	    \   . '\<cr\>!mark!\<cr\>}!mark!\<esc\>?(\<cr\>a')<CR>
+
+	function! Def_Map(key, expr1, expr2)
+	  if exists('b:usemarks') && b:usemarks
+	    return "\<c-r>=MapNoContext2('"
+	       \  . a:key."',BuildMapSeq(\"".a:expr2."\"))\<cr>"
+	  else
+	    return "\<c-r>=MapNoContext2('".a:key."', \"".a:expr1."\")\<cr>"
+	  endif
+	endfunction
+<
+Then, within normal context, when |b:usemarks| is set, "for" is expanded into: >
+	for (;«»;«») {
+	    «»
+	}«»
+and the cursor placed just after the opening parenthesis.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+					*EatChar()* *:Inoreabbr* *:Iabbr*
+EatChar({pattern}), :Inoreabbr, :Iabbr~
+
+If you have always dreamt of |abbreviations| that do not insert the <space>
+you typed to make it (the abbrev.) expand, this function is for you ! 
+
+Let's suppose you want to map "if<space>" to "if ()<left>". Doing this is
+quite easy thanks to |imap|. But it does not display the characters as you
+type them, unless you use |iabbr|. Unfortunately, this time when you type
+"if<space>", a space will be added between the parenthesis. That's not what
+you want either.
+
+The function proposed here, and the two commands |:Iabbr| and |:Inoreabbr|
+address this problem. Define your abbreviations thanks to these commands, and
+spaces won't show up. 
+
+N.B.: I am not the original author of this tip. You have to thank Bram
+Moolenar, Benji Fisher and some other people on the VIM mailing list
+(|mail-list|) for this. The version I propose in my file does not support
+multi-byte characters for the moment. 
+
+
+------------------------------------------------------------------------------
+							*bracketing.base.vim*
+bracketing.base.vim ~
+			For Vim version 6.0.+ only
+
+						*markers* 
+						*!mark!* *!jump!* *!jumpB!*
+This file defines the bases of the bracketing system I use. What I propose
+here is an improvement over Stephen Riehm original system -- you could find the
+whole package with an important documentation and other remarks on Benji
+Fisher's homepage. Stephen Riehm introduces several language-independent
+mappings to manage brackets-like characters. He also introduces two
+interesting global mappings: |!mark!| and |!jump!| ; and I add |!jumpB!|.
+They are used to mark (with text markers) positions within the file edited and
+jump to them.
+
+
+						*marker* 
+						*b:marker_open* *b:marker_close*
+As I do not expect the same things from a bracketing system when I am
+developing in C++ or writing LaTeX documents, I have conducted a little
+modification on the original system. I added the possibility to dynamically
+change the text markers used -- «» is fine for me except within French LaTeX
+documents. It is achieved through two buffer-relative variables (options):
+|b:marker_open| and |b:marker_close|. I keep the same default values than the
+ones chosen by Stephen Riehm. All the other mappings have been conserved if
+you wish to use this file as Stephen Riehm initially planned to. 
+
+						*:SetMarker*
+If you wish to change the values of |b:marker_open| and |b:marker_close|, you
+can also use the command:
+	:SetMarker {open} {close}
+
+
+I have also added some other features:
+						*g:marker_prefers_select*
+(*) The option |g:marker_prefers_select| (default 1) determines if the text
+    (comment) within a |marker| should be echoed or if the whole marker should
+    be selected (in |SELECT-mode|) -- from a Gergely Kontra's idea. Beware
+    one thing: the SELECT-mode is considered to be a declension of the
+    |VISUAL-mode|. Hence all the |imap|s won't expand in SELECT-mode!
+    Fortunately, the |iabbr|s will still expand.
+
+						*g:marker_select_empty_marks*
+(*) The option |g:marker_select_empty_marks| (default 1) determines whether an
+    empty marker should be selected or deleted when a |!jump!| is encountered.
+    Only works if |g:marker_prefers_select| is set. 
+
+				*b:use_place_holders* *g:use_place_holders*
+(*) The option |g:use_place_holders| (default 0) determines whether the
+    marker-characters used are *[bg]:map_PlaceHolderStart* and
+    *[bg]:map_PlaceHolderEnd* instead of |b:marker_open| and |b:marker_close|.
+    This option ensures a compatibility with Srinath Avadhanula's imaps.vim
+    plugin.
+    I meant to support Srinath's variations on my own variations ; he named
+    differently the variables used to define the marker-characters.
+
+			    *b:marker_select_current* *g:marker_select_current*
+(*) When the option |g:marker_select_current| (default 0) is set to 1, the
+    'jump backward' mecanism will select the current marker (the cursor is
+    within) if applicable.  Otherwise, we jump to the marker before the one
+    the cursor is within.
+
+					*b:marker_center* *g:marker_center*
+(*) When this option is set to 1 (default 1), the line of the marker (we jump
+    to) is moved to the middle of the window.
+
+
+(*) The next markers are searched according to the 'wrapscan' option.
+
+
+BTW, I map |!mark!| to <M-Insert>, |!jump!| to <M-Delete>, and |!jumpB!| to
+<M-S-Del>. 
+If you'd rather use other keybindings, then add into your .vimrc something
+like: >
+	imap <C-J>	<Plug>MarkersJumpF
+	 map <C-J>	<Plug>MarkersJumpF
+	imap <C-K>	<Plug>MarkersJumpB
+	 map <C-K>	<Plug>MarkersJumpB
+	imap <C-<>	<Plug>MarkersMark
+	vmap <C-<>	<Plug>MarkersMark
+	
+
+Plugins developpers~
+I provide several global functions that could be useful to develop your own
+plugins or template-files.
+    *Marker_Open()*	returns the first part of the pair of marker-strings.
+    *Marker_Close()*	returns the last part of the pair of marker-strings.
+    *Marker_Txt()*	builds a marker with the optional parameter passed
+Note: the marker-string are automatically converted to match the current
+'encoding'.
+
+Also, two mappings *!jump-and-del!* and *!bjump-and-del!* always jump to the
+next/previous marker and delete it whatever the options are. It ensures that
+the (ft)plugins that depend on these mappings will always do the same thing.
+
+
+------------------------------------------------------------------------------
+							*common_brackets.vim*
+common_brackets.vim ~
+			    For Vim version 6.0.+ only
+
+This file eases the insertion of brackets pairs. It is used by quite all my
+consequent ftplugins. 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Main features~
+								*b:cb_*
+Through a set of buffer-relative options -- cf. the implementation and the
+different other language ftplugins of mine -- , it enables and configures
+bracketing mappings. 
+
+The bracket-like pairs supported are: 
+* parenthesis:      ( and ), 		*b:cb_parent*
+* brackets:         [ and ],  		*b:cb_bracket*
+* curly-brackets:   { and }, 		*b:cb_acco*
+* comparison signs: < and >, 		*b:cb_cmp* *b:cb_ltFn* *b:cb_gtFn*
+* single-quotes:    ' and ', 		*b:cb_quotes*
+* double-quotes:    " and ",		*b:cb_Dquotes* *b:cb_DqFn*
+* and dollars: $ and $ for LaTeX mathematical mode.	*b:cb_mathMode*
+
+The different mappings, described in the following paragraphs, are activated
+only when the corresponding buffer-relative options |b:cb_| are set to 1.
+These options are not meant to be changed dynamically, but to be set once
+within |ftplugins|.
+
+Some behaviors can be tuned much more finely with callback functions:
+|b:cb_DqFn| for double quotes, |b:cb_ltFn| for '<' and |b:cb_gtFn| for '>'.
+Cf. ML_set.vim and vim_set.vim for examples.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+How it works~
+
+When we hit (in |insert-mode|) the starting character of a pair, the second
+one is automatically inserted. In |visual-mode| (resp. |normal-mode|) the
+opening character can be hit once -- except for quotes and dollars that have
+to be hit twice -- in order to insert the pair around the visual area (resp.
+current word).  
+
+If *b:cb_jump_on_close* is not set to false (0), pressing the second character
+from the pair puts the cursor just after the next occurrence of this character
+(and in |insert-mode|). But you'd better use |!jump!| in conjunction with the
+|markers|. This must be set _before_ Brackets() is called by the various
+ftplugins.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Dynamic (de-)activations~
+
+When |Trigger.vim| is installed, the macros defined here can be activated and
+deactivated as a whole by pressing <F9>.
+
+								*b:usemarks*
+In |insert-mode|, two operating modes are provided: one very classic and one
+that takes advantage of Stephen Riehm's markers when the buffer-relative
+option |b:usemarks| is set to 1. In that latter case, markers are inserted at
+the end of the pair of brakets.  
+The option can be toggled by hitting the trigger <M-F9> -- if |Trigger.vim| is
+installed. 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Accessibility~
+
+For personal and technical (the meta-mappings do not suit to the layout of my
+French keyboard) reasons, I prefer to use the opening character of a
+bracket-like structure in order to insert the whole structure. 
+
+In insert and normal modes, it is also possible to hit <Meta> + the opening
+character to insert the corresponding structure around the current/previous
+word -- this is not fully supported on French keyboards and is incompatible
+with Stephen Riehm's default meta-mappings. 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+						    *brackets_manipulations*
+Brackets manipulations~
+
+I have stolen some functions from auctex.vim, and integrated them into
+common_brackets.vim because they are not useful only to LaTeX editing.
+
+(*) When in |insert-mode| a backslash is under the cursor, and we hit the
+    opening character of a pair of "brackets", then another backslash is added
+    before the closing "bracket".
+(*) In |normal-mode|, we can:
+    - delete a pair of brackets                  : with <M-b>x or <M-b><Delete>
+    - change a pair of brackets to parenthesis   : with <M-b>(
+    - change a pair of brackets to square ones   : with <M-b>[
+    - change a pair of brackets to curly ones    : with <M-b>{
+    - toggle the backslash on a pair of brackets : with <M-b>\
+
+						*brackets_manipulation_mode*
+Actually, by default, there is only one mapping (to <M-b>) that makes VIM
+enter a brackets manipulation mode (much like |i_CTRL-X|). From there, you can
+hit 'x', '<delete>', '(', '[', '{', or '<F1>' that will behave like exposed
+earlier, or display a little help message.
+
+If you don't want of this brackets manipulation mode, in your .vimrc enforce
+*g:cb_want_mode* to 0. It values 1 by default.
+
+		    *BracketsManipMode()*
+		    *<Plug>DeleteBrackets* *<Plug>ChangeToRoundBrackets*
+		    *<Plug>ChangeToSquareBrackets* *<Plug>ChangeToCurlyBrackets*
+		    *<Plug>ToggleBackslash*
+Again, if you don't like the default keybinding, with vim 6.0+ you can change
+them into your .vimrc with something like: >
+	:noremap <silent> <C-L>b	:call BracketsManipMode("\<C-L>b")<cr>
+otherwise, if |g:cb_want_mode| is left to 1, define: >
+	    :map	<C-L>bx		<Plug>DeleteBrackets
+	    :map	<C-L>b<del>	<Plug>DeleteBrackets
+	    :map	<C-L>b(		<Plug>ChangeToRoundBrackets
+	    :map	<C-L>b[		<Plug>ChangeToSquareBrackets
+	    :map	<C-L>b{		<Plug>ChangeToCurlyBrackets
+	    :map	<C-L>b\		<Plug>ToggleBackslash
+>
+	
+------------------------------------------------------------------------------
+ © Luc Hermitte, 2001-2003 <http://hermitte.free.fr/vim/>
+ VIM: let b:VS_language = 'american' 
+ vim:ts=8:sw=4:tw=78:fo=tcq2:isk=!-~,^*,^\|,^\":ft=help:

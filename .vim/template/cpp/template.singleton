@@ -1,0 +1,53 @@
+VimL:" C++ Singleton-Class Template, Luc Hermitte, 30th Jul 2003
+VimL:" «Meyers singleton», cf. More Effective C++ Item 26
+VimL:" For a more precise definition, cf. A. Alexandrescu's Modern C++ Design
+VimL: let s:value_start = '¡'
+VimL: let s:value_end   = '¡'
+VimL: let s:reindent = 1
+VimL: let s:clsname = inputdialog("singleton name ?")
+VimL:"
+/*===========================================================================*/
+/*===============================[ Class ¡s:clsname¡ ]==============================*/
+/*===========================================================================*/
+class ¡s:clsname¡
+{
+/*-------------------------------[ Access to the unique instance ]-----------*/
+		/** @name Singleton */
+    //@{ 
+private:
+    /** Constructor */
+    explicit ¡s:clsname¡() «code ?»;
+    /** Destructor */
+		virtual ~¡s:clsname¡() «code ?»;
+
+		/** No copy constructor ; not implemented */
+    ¡s:clsname¡(const ¡s:clsname¡ & rhs);
+		/** No copy operator ; not implemented */
+    ¡s:clsname¡& operator=(const ¡s:clsname¡ & rhs);
+
+public:
+		/** The instance */
+		static ¡s:clsname¡ & instance() {
+			static ¡s:clsname¡ theInstance;
+			return theInstance;
+		}
+    //@}
+
+
+/*-------------------------------[ Public methods ]--------------------------*/
+    /** @name Public methods */
+    //@{
+public:
+		¡Marker_Txt('')¡;
+    //@}
+
+/*-------------------------------[ Data ]------------------------------------*/
+    /** @name Data */
+    //@{
+private:
+		¡Marker_Txt('')¡;
+    //@}
+
+/*-------------------------------[ End of class ]----------------------------*/
+}; ¡Marker_Txt('')¡
+

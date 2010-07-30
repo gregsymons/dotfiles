@@ -1,0 +1,13 @@
+VimL: "C/C++ Implementation File-Template, Greg Symons, 6/15/06
+VimL: "Adapted from template included in Luc Hermitte's lh-cpp ftplugins package
+VimL: "for vim
+VimL: let s:value_start = '¡'
+VimL: let s:value_end   = '¡'
+
+¡Marker_Txt("Includes")¡
+¡filereadable(expand("%:p:r").'.h')  ? '#include "'.expand('%:t:r').'.h"'  :""¡
+¡filereadable(expand("%:p:r").'.hh') ? '#include "'.expand('%:t:r').'.hh"' :""¡
+¡filereadable(expand("%:p:r").'.hpp') ? '#include "'.expand('%:t:r').'.hpp"' :""¡
+¡filereadable(expand("%:p:r").'.inl')? '#include "'.expand('%:t:r').'.inl"':""¡
+
+¡Marker_Txt("other stuff")¡
