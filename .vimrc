@@ -14,6 +14,8 @@ set backup
 set backupext=.bak
 set nocp
 set exrc
+set tags+=tags;/depot/phone/proj/main/shoretel/**
+set path+=/depot/phone/proj/main/shoretel/**
 filetype plugin on
 imap <C-F>  <Esc>gUiw`]a
 colorscheme oceandeep
