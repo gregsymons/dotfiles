@@ -1,19 +1,19 @@
 syntax on
 set et
-set ts=3
-set sw=3
+set ts=4
+set sw=4
 set tw=80
 set bs=eol,indent,start
 set ruler
 set ai
 set si
-set guifont=DPCustomMono2\ 10
-set tags=
-set path=
+set guifont=DPCustomMono2\ 8
+set grepprg=grep\ -n
 set autowrite
 set backup 
 set backupext=.bak
 set nocp
+set exrc
 filetype plugin on
 imap <C-F>  <Esc>gUiw`]a
 colorscheme oceandeep
@@ -47,7 +47,9 @@ function! LintXmlQuickFixParse()
 endf
 
 command! LintQF call LintXmlQuickFixParse()
-command! Evimrc edit $HOME/.vimrc
+command! Evimrc edit ~/.vimrc
+command! Header vert sfind %:t:r.h
+command! Cpp vert sfind %:t:r.cpp
 
 if !exists("my_autocommands")
    let my_autocommands = 1
