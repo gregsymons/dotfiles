@@ -17,20 +17,6 @@ set exrc
 filetype plugin on
 imap <C-F>  <Esc>gUiw`]a
 colorscheme oceandeep
-let g:author='Greg Symons'
-let g:author_initials='GMS'
-let g:c_nl_before_curlyB = 1
-
-function! CreateTemplateMappings()
-   "Make expanded fields easier to handle.
-   iabbr field ¡Marker_Txt("")¡<Esc>3ha
-   "Map guillemotes and upside-down exclamation and question marks for editing 
-   "templates
-   imap <Leader><< «
-   imap <Leader>>> »
-   imap <Leader>! ¡
-   imap <Leader>? ¿
-endfunction
 
 function! EditFileFromClipboard()
    let fname = getreg('+')
