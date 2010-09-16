@@ -1,9 +1,0 @@
-VimL: " C++ function template
-VimL: let s:funcname = inputdialog('function name?')
-VimL: call s:Include('function-header')
-
-«return» ¡s:funcname¡(«parameters»)
-{
-   «Function Body»
-}
-«»
