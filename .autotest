@@ -4,15 +4,17 @@ EXPIRATION_IN_SECONDS = 5
 ERROR_ICON = 'gtk-dialog-error'
 SUCCESS_ICON = 'gtk-dialog-info'
 
-def notify(title, results, icon)
+def notify(title, icon)
    options = "-t #{EXPIRATION_IN_SECONDS * 1000} -i #{icon}"
-   system "notify-send #{options} '#{title}' '#{results}'"
+   system "notify-send #{options} \"#{title}\""
 end
 
 Autotest.add_hook :red do |autotest|
-   notify "This shit's broke", autotest.results, ERROR_ICON
+   
+   notify "This shit's broke!", ERROR_ICON
 end
 
 Autotest.add_hook :green do |autotest|
-   notify "Snootchie-bootchies!", autotest.results, SUCCESS_ICON
+   notify "Snootchie-bootchies!", SUCCESS_ICON
 end
+
