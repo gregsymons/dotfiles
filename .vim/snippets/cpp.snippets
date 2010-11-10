@@ -28,3 +28,31 @@ snippet cl
 	private:
 		${3:/* data */}
 	};
+
+snippet test
+	TEST(${1:something}, ${2:shouldDoSomething})
+	{
+		${3}
+	}
+
+snippet test_f
+	TEST_F(${1:something}, ${2:shouldDoSomething})
+	{
+		${3}
+	}
+
+snippet dox
+	/**
+	 * ${1}
+	 */
+
+snippet gtest
+	#include <gtest/gtest.h>
+	#include <gmock/gmock.h>
+
+	using namespace testing;
+
+	TEST(${1:SomethingTests}, shouldFail)
+	{
+		FAIL();
+	}

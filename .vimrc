@@ -7,7 +7,7 @@ set bs=eol,indent,start
 set ruler
 set ai
 set si
-set guifont=DPCustomMono2\ 8
+set guifont=DPCustomMono2\ 6
 set grepprg=grep\ -n
 set autowrite
 set backup 
@@ -34,10 +34,21 @@ function! LintXmlQuickFixParse()
    cb
 endf
 
+function! FindAndOpen(fname, inplace)
+    if a:inplace == '!'
+        let opencmd = 'find'
+    else
+        let opencmd = 'vert sfind'
+    endif
+
+    silent execute opencmd . ' ' . a:fname
+endf
+
 command! LintQF call LintXmlQuickFixParse()
 command! Evimrc edit ~/.vimrc
-command! Header vert sfind %:t:r.h
-command! Cpp vert sfind %:t:r.cpp
+command! Svimrc source ~/.vimrc
+command! -bang Header call FindAndOpen(expand('%:t:r') . '.h', '<bang>')
+command! -bang Cpp call FindAndOpen(expand('%:t:r') . '.cpp', '<bang>')
 
 if !exists("my_autocommands")
    let my_autocommands = 1
