@@ -7,3 +7,7 @@ function cdreal() {
 if [[ -x ~/git-prompt/git-prompt.sh ]]; then
     . ~/git-prompt/git-prompt.sh
 fi
+
+if [[ -x ~/.bash_aliases.local ]]; then
+    . ~/.bash_aliases.local
+fi
