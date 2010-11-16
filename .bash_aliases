@@ -4,10 +4,10 @@ function cdreal() {
     cd `readlink -f $1`
 }
 
-if [[ -x ~/git-prompt/git-prompt.sh ]]; then
+if [[ -f ~/git-prompt/git-prompt.sh ]]; then
     . ~/git-prompt/git-prompt.sh
 fi
 
-if [[ -x ~/.bash_aliases.local ]]; then
+if [[ -f ~/.bash_aliases.local ]]; then
     . ~/.bash_aliases.local
 fi
