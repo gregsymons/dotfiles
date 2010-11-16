@@ -1,6 +1,11 @@
 #!/bin/bash
 
-MY_DIR=`dirname $0`
+#only works in Linux, but I don't need to be portable here.
+MY_EXE=`readlink -f $0`
+MY_DIR=`dirname ${MY_EXE}`
+
+echo Discovered install directory: ${MY_DIR}
+
 SETTINGS_FILE=${MY_DIR}/install_settings.cfg
 
 if [[ -f ${SETTINGS_FILE} ]]; then
@@ -20,6 +25,7 @@ for file in ${LN_FILES}; do
     full_path=${MY_DIR}/$file
     if [[ -e $full_path ]]; then
         echo Symlinking $full_path to ~/$file
+        rm -f ~/$file
         ln -s $full_path ~/$file
     fi
 done
