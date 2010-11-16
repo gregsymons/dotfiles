@@ -1,0 +1,8 @@
+[user]
+    name=Greg Symons
+    email=gsymons@gsconsulting.biz
+
+[alias]
+    co=checkout
+    ci=commit
+    st=status
