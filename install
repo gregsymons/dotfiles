@@ -1,0 +1,25 @@
+#!/bin/bash
+
+MY_DIR=`dirname $0`
+SETTINGS_FILE=${MY_DIR}/install_settings.cfg
+
+if [[ -f ${SETTINGS_FILE} ]]; then
+    echo Loading local settings from ${SETTINGS_FILE}
+    . ${SETTINGS_FILE}
+fi
+
+LN_FILES="${LN_FILES} 
+            .vimrc 
+            .vim 
+            .bash_aliases 
+            .bash_aliases.local 
+            .gitconfig 
+            .autotest"
+
+for file in ${LN_FILES}; do
+    full_path=${MY_DIR}/$file
+    if [[ -e $full_path ]]; then
+        echo Symlinking $full_path to ~/$file
+        ln -s $full_path ~/$file
+    fi
+done
