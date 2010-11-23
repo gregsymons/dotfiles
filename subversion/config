@@ -1,0 +1,225 @@
+### This file configures various client-side behaviors.
+###
+### The commented-out examples below are intended to demonstrate
+### how to use this file.
+
+### Section for authentication and authorization customizations.
+[auth]
+### Set store-passwords to 'no' to avoid storing passwords in the
+### auth/ area of your config directory.  It defaults to 'yes'.
+### Note that this option only prevents saving of *new* passwords;
+### it doesn't invalidate existing passwords.  (To do that, remove
+### the cache files by hand as described in the Subversion book.)
+# store-passwords = no
+### Set store-auth-creds to 'no' to avoid storing any subversion
+### credentials in the auth/ area of your config directory.
+### It defaults to 'yes'.  Note that this option only prevents
+### saving of *new* credentials;  it doesn't invalidate existing
+### caches.  (To do that, remove the cache files by hand.)
+# store-auth-creds = no
+password-stores =
+
+### Section for configuring external helper applications.
+[helpers]
+### Set editor to the command used to invoke your text editor.
+###   This will override the environment variables that Subversion
+###   examines by default to find this information ($EDITOR, 
+###   et al).
+# editor-cmd = editor (vi, emacs, notepad, etc.)
+### Set diff-cmd to the absolute path of your 'diff' program.
+###   This will override the compile-time default, which is to use
+###   Subversion's internal diff implementation.
+# diff-cmd = diff_program (diff, gdiff, etc.)
+### Set diff3-cmd to the absolute path of your 'diff3' program.
+###   This will override the compile-time default, which is to use
+###   Subversion's internal diff3 implementation.
+# diff3-cmd = diff3_program (diff3, gdiff3, etc.)
+### Set diff3-has-program-arg to 'true' or 'yes' if your 'diff3'
+###   program accepts the '--diff-program' option.
+# diff3-has-program-arg = [true | false]
+
+### Section for configuring tunnel agents.
+[tunnels]
+### Configure svn protocol tunnel schemes here.  By default, only
+### the 'ssh' scheme is defined.  You can define other schemes to
+### be used with 'svn+scheme://hostname/path' URLs.  A scheme
+### definition is simply a command, optionally prefixed by an
+### environment variable name which can override the command if it
+### is defined.  The command (or environment variable) may contain
+### arguments, using standard shell quoting for arguments with
+### spaces.  The command will be invoked as:
+###   <command> <hostname> svnserve -t
+### (If the URL includes a username, then the hostname will be
+### passed to the tunnel agent as <user>@<hostname>.)  If the
+### built-in ssh scheme were not predefined, it could be defined
+### as:
+# ssh = $SVN_SSH ssh
+### If you wanted to define a new 'rsh' scheme, to be used with
+### 'svn+rsh:' URLs, you could do so as follows:
+# rsh = rsh
+### Or, if you wanted to specify a full path and arguments:
+# rsh = /path/to/rsh -l myusername
+### On Windows, if you are specifying a full path to a command,
+### use a forward slash (/) or a paired backslash (\\) as the
+### path separator.  A single backslash will be treated as an
+### escape for the following character.
+
+### Section for configuring miscelleneous Subversion options.
+[miscellany]
+### Set global-ignores to a set of whitespace-delimited globs
+### which Subversion will ignore in its 'status' output.
+# global-ignores = *.o *.lo *.la #*# .*.rej *.rej .*~ *~ .#* .DS_Store
+### Set log-encoding to the default encoding for log messages
+# log-encoding = latin1
+### Set use-commit-times to make checkout/update/switch/revert
+### put last-committed timestamps on every file touched.
+# use-commit-times = yes
+### Set no-unlock to prevent 'svn commit' from automatically
+### releasing locks on files.
+# no-unlock = yes
+### Set enable-auto-props to 'yes' to enable automatic properties
+### for 'svn add' and 'svn import', it defaults to 'no'.
+### Automatic properties are defined in the section 'auto-props'.
+enable-auto-props = yes
+
+### Section for configuring automatic properties.
+[auto-props]
+### The format of the entries is:
+###   file-name-pattern = propname[=value][;propname[=value]...]
+### The file-name-pattern can contain wildcards (such as '*' and
+### '?').  All entries which match will be applied to the file.
+### Note that auto-props functionality must be enabled, which
+### is typically done by setting the 'enable-auto-props' option.
+INSTALL = svn:eol-style=native;svn:mime-type=text/plain
+KEYS = svn:eol-style=native;svn:mime-type=text/plain
+Makefile = svn:eol-style=native;svn:mime-type=text/plain
+LICENSE = svn:eol-style=native;svn:mime-type=text/plain
+NOTICE = svn:eol-style=native;svn:mime-type=text/plain
+README = svn:eol-style=native;svn:mime-type=text/plain
+abs-linkmap = svn:eol-style=native;svn:mime-type=text/plain
+abs-menulinks = svn:eol-style=native;svn:mime-type=text/plain
+*.aart = svn:eol-style=native;svn:mime-type=text/plain
+*.ac = svn:eol-style=native;svn:mime-type=text/plain
+*.am = svn:eol-style=native;svn:mime-type=text/plain
+*.apt = svn:eol-style=native;svn:mime-type=text/plain
+*.as = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.bat = svn:eol-style=native;svn:mime-type=text/plain
+*.c = svn:eol-style=native;svn:mime-type=text/plain
+*.cat = svn:eol-style=native;svn:mime-type=text/plain
+*.cgi = svn:eol-style=native;svn:mime-type=text/plain
+*.classpath = svn:eol-style=native;svn:mime-type=text/plain
+*.cmd = svn:eol-style=native;svn:mime-type=text/plain
+*.cnd = svn:eol-style=native;svn:mime-type=text/plain
+*.conf = svn:eol-style=native;svn:mime-type=text/plain
+*.config = svn:eol-style=native;svn:mime-type=text/plain
+*.cpp = svn:eol-style=native;svn:mime-type=text/plain
+*.css = svn:eol-style=native;svn:mime-type=text/plain
+*.csv = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.cwiki = svn:eol-style=native;svn:mime-type=text/plain
+*.data = svn:eol-style=native;svn:mime-type=text/plain
+*.dcl = svn:eol-style=native;svn:mime-type=text/plain
+*.doc = svn:mime-type=application/msword
+*.dsp = svn:eol-style=CRLF;svn:mime-type=text/plain
+*.dsw = svn:eol-style=CRLF;svn:mime-type=text/plain
+*.dtd = svn:eol-style=native;svn:mime-type=text/plain
+*.egrm = svn:eol-style=native;svn:mime-type=text/plain
+*.ent = svn:eol-style=native;svn:mime-type=text/plain
+*.ft = svn:eol-style=native;svn:mime-type=text/plain
+*.ftl = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.fn = svn:eol-style=native;svn:mime-type=text/plain
+*.fv = svn:eol-style=native;svn:mime-type=text/plain
+*.g = svn:eol-style=native;svn:mime-type=text/plain
+*.gant = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.gif = svn:mime-type=image/gif
+*.grm = svn:eol-style=native;svn:mime-type=text/plain
+*.groovy = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.gz = svn:mime-type=application/x-gzip
+*.h = svn:eol-style=native;svn:mime-type=text/plain
+*.htc = svn:eol-style=native;svn:mime-type=text/plain
+*.htaccess = svn:eol-style=native;svn:mime-type=text/plain
+*.handlers = svn:eol-style=native;svn:mime-type=text/plain
+*.htm = svn:eol-style=native;svn:mime-type=text/plain
+*.html = svn:eol-style=native;svn:mime-type=text/plain
+*.ico = svn:mime-type=image/x-icon
+*.ihtml = svn:eol-style=native;svn:mime-type=text/plain
+*.in = svn:eol-style=native;svn:mime-type=text/plain
+*.ipr = svn:eol-style=native;svn:mime-type=text/plain
+*.iws = svn:eol-style=native;svn:mime-type=text/plain
+*.java = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.jmx = svn:eol-style=LF;svn:mime-type=text/plain
+*.jpg = svn:mime-type=image/jpeg
+*.jrxml = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.jsp = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.jspf = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.js = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.junit = svn:eol-style=native;svn:mime-type=text/plain
+*.jws = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.jx = svn:eol-style=native;svn:mime-type=text/plain
+*.kjb = svn:eol-style=native;svn:mime-type=text/plain
+*.ktr = svn:eol-style=native;svn:mime-type=text/plain
+*.launch = svn:eol-style=native;svn:mime-type=text/plain
+*.m = svn:eol-style=native;svn:mime-type=text/plain
+*.m4 = svn:eol-style=native;svn:mime-type=text/plain
+*.manifest = svn:eol-style=native;svn:mime-type=text/plain
+*.meta = svn:eol-style=native;svn:mime-type=text/plain
+*.mf = svn:eol-style=native;svn:mime-type=text/plain
+*.MF = svn:eol-style=native;svn:mime-type=text/plain
+*.mod = svn:eol-style=native;svn:mime-type=text/plain
+*.ms = svn:eol-style=native;svn:mime-type=text/plain
+*.mxml = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.n3 = svn:eol-style=native;svn:mime-type=text/plain
+*.nroff = svn:eol-style=native;svn:mime-type=text/plain
+*.patch = svn:eol-style=native;svn:mime-type=text/plain
+*.pdf = svn:mime-type=application/pdf
+*.pen = svn:eol-style=native;svn:mime-type=text/plain
+*.php = svn:eol-style=native;svn:mime-type=text/plain
+*.pl = svn:eol-style=native;svn:mime-type=text/plain
+*.pm = svn:eol-style=native;svn:mime-type=text/plain
+*.png = svn:mime-type=image/png
+*.pod = svn:eol-style=native;svn:mime-type=text/plain
+*.pom = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.prefs = svn:eol-style=native;svn:mime-type=text/plain
+*.project = svn:eol-style=native;svn:mime-type=text/plain
+*.properties = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.py = svn:eol-style=native;svn:mime-type=text/plain
+*.rb = svn:eol-style=native;svn:mime-type=text/plain
+*.rdf = svn:eol-style=native;svn:mime-type=text/plain
+*.rnc = svn:eol-style=native;svn:mime-type=text/plain
+*.rng = svn:eol-style=native;svn:mime-type=text/plain
+*.rnx = svn:eol-style=native;svn:mime-type=text/plain
+*.roles = svn:eol-style=native;svn:mime-type=text/plain
+*.rss = svn:eol-style=native;svn:mime-type=text/plain
+*.schemas = svn:eol-style=native;svn:mime-type=text/plain
+*.settings = svn:eol-style=native;svn:mime-type=text/plain
+*.sh = svn:eol-style=native;svn:mime-type=text/plain
+*.sql = svn:eol-style=native;svn:mime-type=text/plain
+*.svg = svn:eol-style=native;svn:mime-type=text/plain
+*.tld = svn:eol-style=native;svn:mime-type=text/plain
+*.txt = svn:eol-style=native;svn:mime-type=text/plain
+*.types = svn:eol-style=native;svn:mime-type=text/plain
+*.vm = svn:eol-style=native;svn:mime-type=text/plain
+*.vsl = svn:eol-style=native;svn:mime-type=text/plain
+*.wsdd = svn:eol-style=native;svn:mime-type=text/plain
+*.wsdl = svn:eol-style=native;svn:mime-type=text/plain
+*.xargs = svn:eol-style=native;svn:mime-type=text/plain
+*.xcat = svn:eol-style=native;svn:mime-type=text/plain
+*.xconf = svn:eol-style=native;svn:mime-type=text/plain
+*.xegrm = svn:eol-style=native;svn:mime-type=text/plain
+*.xgrm = svn:eol-style=native;svn:mime-type=text/plain
+*.xhtml = svn:eol-style=native;svn:mime-type=text/plain
+*.xhtml2 = svn:eol-style=native;svn:mime-type=text/plain
+*.xlex = svn:eol-style=native;svn:mime-type=text/plain
+*.xlog = svn:eol-style=native;svn:mime-type=text/plain
+*.xmap = svn:eol-style=native;svn:mime-type=text/plain
+*.xml = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.xroles = svn:eol-style=native;svn:mime-type=text/plain
+*.xsamples = svn:eol-style=native;svn:mime-type=text/plain
+*.xsd = svn:eol-style=native;svn:mime-type=text/plain
+*.xsl = svn:eol-style=native;svn:mime-type=text/plain
+*.xslt = svn:eol-style=native;svn:mime-type=text/plain
+*.xsp = svn:eol-style=native;svn:mime-type=text/plain
+*.xtest = svn:eol-style=native;svn:mime-type=text/plain
+*.xul = svn:eol-style=native;svn:mime-type=text/plain
+*.xweb = svn:eol-style=native;svn:mime-type=text/plain
+*.xwelcome = svn:eol-style=native;svn:mime-type=text/plain
+# please add new types in alphabetical order

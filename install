@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 #only works in Linux, but I don't need to be portable here.
 MY_EXE=`readlink -f $0`
 MY_DIR=`dirname ${MY_EXE}`
@@ -19,13 +20,17 @@ LN_FILES="${LN_FILES}
             .bash_aliases 
             .bash_aliases.local 
             .gitconfig 
-            .autotest"
+            .autotest
+            subversion/config;.subversion/config"
 
-for file in ${LN_FILES}; do
-    full_path=${MY_DIR}/$file
+for file_spec in ${LN_FILES}; do
+    src_file=$(echo $file_spec | cut -f1 -d';')
+    dst_file=$(echo $file_spec | cut -f2 -d';')
+
+    full_path=${MY_DIR}/$src_file
     if [[ -e $full_path ]]; then
-        echo Symlinking $full_path to ~/$file
-        rm -f ~/$file
-        ln -s $full_path ~/$file
+        echo Symlinking $full_path to ~/$dst_file
+        rm -f ~/$dst_file
+        ln -s $full_path ~/$dst_file
     fi
 done
