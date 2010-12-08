@@ -1,4 +1,5 @@
 export TOOLS_HOME=~/tools
+export TOOLS_LOCAL_HOME=~/tools_local
 
 export ANT_HOME=$TOOLS_HOME/ant
 export PATH=$PATH:$ANT_HOME/bin
@@ -6,5 +7,10 @@ export PATH=$PATH:$ANT_HOME/bin
 export MAVEN_HOME=$TOOLS_HOME/maven
 export PATH=$PATH:$MAVEN_HOME/bin
 
-export ECLIPSE_HOME=$TOOLS_HOME/eclipse
+export ECLIPSE_HOME=$TOOLS_LOCAL_HOME/eclipse
 export PATH=$PATH:$ECLIPSE_HOME
+
+export KETTLE_HOME=$TOOLS_LOCAL_HOME/kettle
+export PATH=$PATH:$KETTLE_HOME
+
+export SVN_BASH_COMPL_EXT=url
