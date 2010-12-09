@@ -20,6 +20,7 @@ LN_FILES="${LN_FILES}
             .bash_aliases 
             .bash_aliases.local 
             .gitconfig 
+            gitignore;.gitignore
             .autotest
             subversion/config;.subversion/config"
 
@@ -30,6 +31,9 @@ for file_spec in ${LN_FILES}; do
     full_path=${MY_DIR}/$src_file
     if [[ -e $full_path ]]; then
         echo Symlinking $full_path to ~/$dst_file
+        if [[ ! -d `dirname $dst_file` ]]; then
+            mkdir -p `dirname $dst_file`
+        fi
         rm -f ~/$dst_file
         ln -s $full_path ~/$dst_file
     fi

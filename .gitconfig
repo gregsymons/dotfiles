@@ -6,3 +6,5 @@
     co=checkout
     ci=commit
     st=status
+[core]
+    excludesfile = ~/.gitignore
