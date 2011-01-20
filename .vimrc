@@ -7,7 +7,11 @@ set bs=eol,indent,start
 set ruler
 set ai
 set si
-set guifont=DPCustomMono2\ 8
+if has("win32")
+    set guifont=DPCustomMono2:h8
+else
+    set guifont=DPCustomMono2\ 8
+endif
 set grepprg=grep\ -n
 set autowrite
 set backup 
