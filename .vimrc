@@ -14,6 +14,7 @@ set backup
 set backupext=.bak
 set nocp
 set exrc
+set secure
 filetype plugin on
 imap <C-F>  <Esc>gUiw`]a
 colorscheme oceandeep
@@ -48,7 +49,7 @@ endif
 
 
 nmap vK :call VerticalHelp()<Return>
-nmap <M-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<Return>
+nmap <M-S-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<Return>
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
