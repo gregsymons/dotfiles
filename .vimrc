@@ -18,7 +18,9 @@ set backup
 set backupext=.bak
 set nocp
 set exrc
-set secure
+
+let g:local_vimrc = '.vimrc.local'
+
 filetype plugin on
 imap <C-F>  <Esc>gUiw`]a
 colorscheme oceandeep
@@ -62,3 +64,5 @@ map <M-j> <C-W>J
 map <M-k> <C-W>K
 map <M-g> <C-W>H
 map <M-l> <C-W>L
+
+set secure
