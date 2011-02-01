@@ -49,6 +49,7 @@ highlight Search        gui=NONE guibg=LightSkyBlue4 guifg=NONE
 highlight SpecialKey    guibg=black guifg=#324262
 highlight StatusLine    gui=bold guibg=grey88 guifg=black
 highlight StatusLineNC  gui=NONE guibg=grey60 guifg=grey10
+highlight User1         gui=bold guibg=grey88 guifg=DarkRed
 highlight Title         gui=bold  guifg=MediumOrchid1 guibg=bg
 highlight Visual        gui=reverse guibg=WHITE guifg=SeaGreen
 highlight VisualNOS     gui=bold,underline guifg=fg guibg=bg
