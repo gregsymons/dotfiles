@@ -7,13 +7,23 @@ set bs=eol,indent,start
 set ruler
 set ai
 set si
-set guifont=DPCustomMono2\ 8
+set laststatus=2
+set statusline=%f\ %h%m%r[%1*%{GitBranch()}%*]%<%=%-14.(%l,%c%V%)\ %P
+
+if has("win32")
+    set guifont=DPCustomMono2:h8
+else
+    set guifont=DPCustomMono2\ 8
+endif
 set grepprg=grep\ -n
 set autowrite
 set backup 
 set backupext=.bak
 set nocp
 set exrc
+
+let g:local_vimrc = '.vimrc.local'
+
 filetype plugin on
 imap <C-F>  <Esc>gUiw`]a
 colorscheme oceandeep
@@ -32,10 +42,31 @@ function! LintXmlQuickFixParse()
    cb
 endf
 
+function! FindAndOpen(base, inplace, ...)
+    if a:inplace == '!'
+        let opencmd = 'edit'
+    else
+        let opencmd = 'vsplit'
+    endif
+
+    for extension in a:000
+        let fname = findfile(a:base . extension)
+        if fname != ''
+            silent execute opencmd . ' ' . fname
+            return
+        endif
+    endfor
+
+    echohl WarningMsg
+    echomsg 'Unable to find a file!'
+    echohl None
+endf
+
 command! LintQF call LintXmlQuickFixParse()
 command! Evimrc edit ~/.vimrc
-command! Header vert sfind %:t:r.h
-command! Cpp vert sfind %:t:r.cpp
+command! Svimrc source ~/.vimrc
+command! -bang Header call FindAndOpen(expand('%:t:r'), '<bang>', '.h', '.hpp', '.hxx')
+command! -bang Cpp call FindAndOpen(expand('%:t:r'), '<bang>', '.cpp', '.c', '.cxx')
 
 if !exists("my_autocommands")
    let my_autocommands = 1
@@ -48,7 +79,7 @@ endif
 
 
 nmap vK :call VerticalHelp()<Return>
-nmap <M-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<Return>
+nmap <M-S-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<Return>
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
@@ -57,3 +88,5 @@ map <M-j> <C-W>J
 map <M-k> <C-W>K
 map <M-g> <C-W>H
 map <M-l> <C-W>L
+
+set secure

@@ -8,3 +8,5 @@
     st=status
 [core]
     excludesfile = ~/.gitignore
+[color]
+	ui = auto
