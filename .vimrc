@@ -42,21 +42,31 @@ function! LintXmlQuickFixParse()
    cb
 endf
 
-function! FindAndOpen(fname, inplace)
+function! FindAndOpen(base, inplace, ...)
     if a:inplace == '!'
-        let opencmd = 'find'
+        let opencmd = 'edit'
     else
-        let opencmd = 'vert sfind'
+        let opencmd = 'vsplit'
     endif
 
-    silent execute opencmd . ' ' . a:fname
+    for extension in a:000
+        let fname = findfile(a:base . extension)
+        if fname != ''
+            silent execute opencmd . ' ' . fname
+            return
+        endif
+    endfor
+
+    echohl WarningMsg
+    echomsg 'Unable to find a file!'
+    echohl None
 endf
 
 command! LintQF call LintXmlQuickFixParse()
 command! Evimrc edit ~/.vimrc
 command! Svimrc source ~/.vimrc
-command! -bang Header call FindAndOpen(expand('%:t:r') . '.h', '<bang>')
-command! -bang Cpp call FindAndOpen(expand('%:t:r') . '.cpp', '<bang>')
+command! -bang Header call FindAndOpen(expand('%:t:r'), '<bang>', '.h', '.hpp', '.hxx')
+command! -bang Cpp call FindAndOpen(expand('%:t:r'), '<bang>', '.cpp', '.c', '.cxx')
 
 if !exists("my_autocommands")
    let my_autocommands = 1
