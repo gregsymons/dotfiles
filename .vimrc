@@ -17,8 +17,6 @@ else
 endif
 set grepprg=grep\ -n
 set autowrite
-set backup 
-set backupext=.bak
 set nocp
 set exrc
 

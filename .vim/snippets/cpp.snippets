@@ -41,16 +41,21 @@ snippet test_f
 		${3}
 	}
 
+snippet test_p
+	TEST_P(${1:something}, ${2:shouldDoSomething})
+	{
+		${3}
+	}
+
 snippet dox
 	/**
 	 * ${1}
 	 */
 
 snippet gtest
-	#include <gtest/gtest.h>
-	#include <gmock/gmock.h>
+	#include "pch.h"
 
-	using namespace testing;
+	#include <gtest/gtest.h>
 
 	TEST(${1:SomethingTests}, shouldFail)
 	{

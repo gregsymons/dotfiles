@@ -1,3 +1,4 @@
+# vim:ft=sh
 export TOOLS_HOME=~/tools
 export TOOLS_LOCAL_HOME=~/tools_local
 
@@ -14,3 +15,40 @@ export KETTLE_HOME=$TOOLS_LOCAL_HOME/kettle
 export PATH=$PATH:$KETTLE_HOME
 
 export SVN_BASH_COMPL_EXT=url
+
+export CYRUS_ONE=http://svn.drillinginfo.com/repos/branches/deploys/db-20100809_beta_cyrusone/di.main
+export PRODUCTION=http://svn.drillinginfo.com/repos/branches/deploys/2011Q1/di.main
+
+function svn_show_conflicts() {
+    svn status | grep -E '^C'
+    svn_show_tree_conflicts
+}
+
+function svn_show_tree_conflicts() {
+    svn status | grep -A 1 -e '^......C'
+}
+
+function svn_clean() {
+    svn revert -R .
+    local unversioned=`svn status | sed -e '/^[^?]/d' -e 's/^?.......\(.*\)/"\1"/'`
+
+    if [[ "none$unversioned" == "none" ]]; then
+        echo No unversioned files to remove.
+    else
+        echo removing the following unversioned files:
+        echo $unversioned
+        rm -rf $unversioned
+    fi
+}
+
+function svn_merge_fb {
+    svn merge --reintegrate http://svn.drillinginfo.com/repos/branches/$1
+}
+
+function svn_switch_fb {
+    local targetBranch=$1
+    shift
+    local svn_cmd="svn switch $@ http://svn.drillinginfo.com/repos/branches/$targetBranch"
+    echo $svn_cmd
+    $svn_cmd
+}
