@@ -37,6 +37,7 @@ editor-cmd = vim
 ### Set diff3-has-program-arg to 'true' or 'yes' if your 'diff3'
 ###   program accepts the '--diff-program' option.
 # diff3-has-program-arg = [true | false]
+merge-tool-cmd = ~/bin/svn-merge-tool-meld
 
 ### Section for configuring tunnel agents.
 [tunnels]
@@ -68,7 +69,7 @@ editor-cmd = vim
 [miscellany]
 ### Set global-ignores to a set of whitespace-delimited globs
 ### which Subversion will ignore in its 'status' output.
-global-ignores = *.class *.bak target *.tmp *.swp 
+global-ignores = *.class *.bak target *.tmp *.swp *.launch
 ### Set log-encoding to the default encoding for log messages
 # log-encoding = latin1
 ### Set use-commit-times to make checkout/update/switch/revert
@@ -90,6 +91,8 @@ enable-auto-props = yes
 ### '?').  All entries which match will be applied to the file.
 ### Note that auto-props functionality must be enabled, which
 ### is typically done by setting the 'enable-auto-props' option.
+AUTHORS = svn:eol-style=native;svn:mime-type=text/plain
+COPYING = svn:eol-style=native;svn:mime-type=text/plain
 INSTALL = svn:eol-style=native;svn:mime-type=text/plain
 KEYS = svn:eol-style=native;svn:mime-type=text/plain
 Makefile = svn:eol-style=native;svn:mime-type=text/plain
@@ -126,6 +129,7 @@ abs-menulinks = svn:eol-style=native;svn:mime-type=text/plain
 *.ent = svn:eol-style=native;svn:mime-type=text/plain
 *.ft = svn:eol-style=native;svn:mime-type=text/plain
 *.ftl = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.fml = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
 *.fn = svn:eol-style=native;svn:mime-type=text/plain
 *.fv = svn:eol-style=native;svn:mime-type=text/plain
 *.g = svn:eol-style=native;svn:mime-type=text/plain
@@ -161,6 +165,7 @@ abs-menulinks = svn:eol-style=native;svn:mime-type=text/plain
 *.m = svn:eol-style=native;svn:mime-type=text/plain
 *.m4 = svn:eol-style=native;svn:mime-type=text/plain
 *.manifest = svn:eol-style=native;svn:mime-type=text/plain
+*.markdown = svn:eol-style=native;svn:mime-type=text/plain
 *.meta = svn:eol-style=native;svn:mime-type=text/plain
 *.mf = svn:eol-style=native;svn:mime-type=text/plain
 *.MF = svn:eol-style=native;svn:mime-type=text/plain
