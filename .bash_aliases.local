@@ -1,4 +1,8 @@
-export PATH=${PATH}:/opt/Pandora/bin
+source ~/.aws/credentials
+export AWS_ACCESS_KEY_ID=$AWSAccessKeyId
+export AWS_SECRET_ACCESS_KEY=$AWSSecretKey
+export AWS_CREDENTIAL_FILE=~/.aws/credentials
+export PATH=${PATH}:/opt/Pandora/bin:~/.gem/bin
 
 alias ::='cd ..'
 alias :::='cd ../..'
