@@ -1,1 +1,9 @@
 export PATH=${PATH}:/opt/Pandora/bin
+
+alias ::='cd ..'
+alias :::='cd ../..'
+alias ::::='cd ../../..'
+alias :::::='cd ../../../..'
+alias ::::::='cd ../../../../..'
+alias :::::::='cd ../../../../../..'
+# vim:ft=sh

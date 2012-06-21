@@ -2,3 +2,8 @@
 *.swp
 *.gcov
 .vimrc.local
+*.[ao]
+*.d
+*.in
+*.m4
+
