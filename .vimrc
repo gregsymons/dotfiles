@@ -1,7 +1,10 @@
 "Initialize pathogen first
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-
+filetype off
+runtime bundle/pathogen/autoload/pathogen.vim
+execute pathogen#incubate()
 syntax on
+filetype plugin indent on
+
 set et
 set ts=4
 set sw=4
@@ -11,7 +14,7 @@ set ruler
 set ai
 set si
 set laststatus=2
-"set statusline=%f\ %h%m%r[%1*%{GitBranch()}%*]%<%=%-14.(%l,%c%V%)\ %P
+set statusline=%f\ %h%m%r[%1*%{fugitive#statusline()}%*]%<%=%-14.(%l,%c%V%)\ %P
 
 if has("win32")
     set guifont=DPCustomMono2:h8
@@ -25,7 +28,6 @@ set exrc
 
 let g:local_vimrc = '.vimrc.local'
 
-filetype plugin on
 imap <C-F>  <Esc>gUiw`]a
 colorscheme oceandeep
 
