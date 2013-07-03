@@ -8,7 +8,7 @@ set ruler
 set ai
 set si
 set laststatus=2
-set statusline=%f\ %h%m%r[%1*%{GitBranch()}%*]%<%=%-14.(%l,%c%V%)\ %P
+"set statusline=%f\ %h%m%r[%1*%{GitBranch()}%*]%<%=%-14.(%l,%c%V%)\ %P
 
 if has("win32")
     set guifont=DPCustomMono2:h8

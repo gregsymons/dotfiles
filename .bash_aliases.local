@@ -1,4 +1,157 @@
+function svn_show_conflicts() {
+    svn status | grep -E '^C'
+    svn_show_tree_conflicts
+}
+
+function svn_show_tree_conflicts() {
+    svn status | grep -A 1 -e '^......C'
+}
+
+function svn_clean() {
+    svn revert -R .
+    local only_unversioned
+    read -rs -d '@' only_unversioned <<'EOF'
+    BEGIN { FIELDWIDTHS="8 200" };
+    /^\?/    { print $2 };
+EOF
+    local unversioned=`svn status | awk "$only_unversioned"` 
+    if [[ "none$unversioned" == "none" ]]; then
+        echo No unversioned files to remove.
+    else
+        echo removing unversioned files:
+        local old_ifs=$IFS
+
+        IFS=$(echo -en '\n\b')
+        for file in $unversioned; do
+            echo -n $file...
+            rm -rf "$file" && echo Removed || echo Does not exist
+        done
+        IFS="$old_ifs"
+    fi
+}
+
+function svn_mk_fb {
+    local targetBranch=$1
+    local svnCmd="svn cp $TRUNK $BRANCHES/$targetBranch -m '$1: Create feature branch for $1'"
+    echo $svnCmd
+    $svnCmd
+}
+
+function svn_merge_fb {
+    local targetBranch=$1
+    shift
+    local svn_cmd="svn merge --reintegrate $@ $BRANCHES/$targetBranch"
+    echo $svn_cmd
+    $svn_cmd
+    echo merge complete.
+    echo $svn_cmd
+}
+
+function svn_switch_fb {
+    local targetBranch=$1
+    shift
+    local svn_cmd="svn switch $@ $BRANCHES/$targetBranch" echo $svn_cmd
+    $svn_cmd
+}
+
+function svn_cherry_pick {
+    local parsed_opts=`getopt -o t:rm: --long ticket:,revert,message: -n 'svn_cherry_pick' -- "$@"`
+    if [ $? != 0 ]; then 
+        echo "Unable to continue..." >&2;
+        return 1;
+    fi
+
+    eval set -- "$parsed_opts"
+
+    local ticket
+    local revert
+    local message
+    local logMessageFile=svn-commit.$$.tmp
+
+    while true; do
+        case "$1" in
+            -t|--ticket) ticket="($2)"; shift; shift ;;
+            -r|--revert) revert="-"; shift ;;
+            -m|--message) message="$2;"; shift; shift ;;
+            --) shift; break ;;
+            *) echo "Haroo? This don't make no sense: $1"; return 1
+        esac
+    done
+
+    local sourceBranch=$1
+    shift
+    local revisions
+    if [[ "none$message" != "none" ]]; then
+        echo $message > $logMessageFile
+    fi
+
+    for revision in $@; do
+        local log=`svn log -r $revision --incremental $sourceBranch | tail -n+4`
+        echo "$log;" >> $logMessageFile
+        revisions="$revisions -c ${revert}${revision}" 
+    done
+    local svn_cmd="svn merge $revisions $sourceBranch"
+    echo $svn_cmd
+    echo "$svn_cmd $ticket" >> $logMessageFile
+    $svn_cmd
+    echo "Log Message:"
+    cat $logMessageFile
+    echo "...saved to $logMessageFile"
+}
+
+export DI_MAVEN_HOME=${HOME}/tools/maven
+export MAVEN3_HOME=${HOME}/tools_local/apache-maven-3.0.3
+export MAVEN_HOME=${DI_MAVEN_HOME}
+
+function select_maven_version
+{
+    local version=${1:-3}
+    local new_mvn_home=
+
+    case $version in
+        2) new_mvn_home=${DI_MAVEN_HOME} ;;
+        3) new_mvn_home=${MAVEN3_HOME} ;;
+        *) new_mvn_home=${DI_MAVEN_HOME} ;;
+    esac
+
+    local new_path=`echo ${PATH} | sed -e "s;${MAVEN_HOME}/bin:;;g"`:${new_mvn_home}/bin
+    
+#    echo Maven home=${new_mvn_home}
+#    echo New path=${new_path}
+
+    export MAVEN_HOME=${new_mvn_home}
+    export PATH=${new_path}
+}
+
+select_maven_version
+
+export TOOLS_HOME=~/tools
+export TOOLS_LOCAL_HOME=~/tools_local
+
+export ANT_HOME=$TOOLS_HOME/ant
+export PATH=$PATH:$ANT_HOME/bin
+
+export ECLIPSE_HOME=$TOOLS_LOCAL_HOME/eclipse
+export PATH=$PATH:$ECLIPSE_HOME
+
+export KETTLE_HOME=$TOOLS_LOCAL_HOME/kettle
+export PATH=$PATH:$KETTLE_HOME
+
+export SVN_BASH_COMPL_EXT=url
+
+export TRUNK=http://svn/repos/applications/di.main/trunk
+export BRANCHES=http://svn/repos/applications/di.main/branches
+export PRODUCTION=$DI_MAIN_BRANCHES/2011Q1/
+
+export GEM_BIN=/var/lib/gems/1.8/bin
+export PATH=$PATH:$GEM_BIN
+
+export OPSCODE_USER=gsymons
+export ORGNAME=di
+export EDITOR=vim
 export PATH=${PATH}:/opt/Pandora/bin
+
+cd ~
 
 alias ::='cd ..'
 alias :::='cd ../..'
@@ -6,4 +159,9 @@ alias ::::='cd ../../..'
 alias :::::='cd ../../../..'
 alias ::::::='cd ../../../../..'
 alias :::::::='cd ../../../../../..'
+
+. ~/.nvm/nvm.sh
+. /etc/profile
+. /etc/default/locale
+
 # vim:ft=sh
