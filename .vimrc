@@ -1,3 +1,6 @@
+"Initialize pathogen first
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+
 syntax on
 set et
 set ts=4
