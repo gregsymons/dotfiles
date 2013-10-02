@@ -13,3 +13,5 @@
     excludesfile = ~/.gitignore
 [color]
 	ui = auto
+[hub]
+	host = git.drillinginfo.com
