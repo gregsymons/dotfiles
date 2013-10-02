@@ -15,3 +15,5 @@
 	ui = auto
 [hub]
 	host = git.drillinginfo.com
+[push]
+	default = upstream
