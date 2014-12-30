@@ -1,12 +1,19 @@
 [user]
     name=Greg Symons
-    email=gsymons@gsconsulting.biz
-
+    email=gsymons@drillinginfo.com
+    signingkey=0x8E36B9A3
 [alias]
     co=checkout
     ci=commit
     st=status
+    rb=!bash -c '"export BRANCH=$1; export REMOTE=${2:-origin}; echo Creating branch $BRANCH on remote $REMOTE &&  git checkout -b $BRANCH && git push -u $REMOTE $BRANCH"' $1 $2
+    missing=!bash -c '"git cherry -v $1 $2 $3 | grep ^+ || echo No missing changesets"' $1 $2 $3
+    ec=!bash -c '"git clone git@git.drillinginfo.com:$1.git"' $1
 [core]
     excludesfile = ~/.gitignore
 [color]
 	ui = auto
+[hub]
+	host = git.drillinginfo.com
+[push]
+	default = upstream

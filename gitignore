@@ -3,7 +3,7 @@
 *.gcov
 .vimrc.local
 *.[ao]
-*.d
 *.in
 *.m4
-
+.*sw*
+*.pyc

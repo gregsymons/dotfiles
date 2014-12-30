@@ -37,7 +37,7 @@ editor-cmd = vim
 ### Set diff3-has-program-arg to 'true' or 'yes' if your 'diff3'
 ###   program accepts the '--diff-program' option.
 # diff3-has-program-arg = [true | false]
-merge-tool-cmd = ~/bin/svn-merge-tool-meld
+merge-tool-cmd = /home/local/NA/gsymons/bin/svn-merge-tool-meld
 
 ### Section for configuring tunnel agents.
 [tunnels]
@@ -69,7 +69,7 @@ merge-tool-cmd = ~/bin/svn-merge-tool-meld
 [miscellany]
 ### Set global-ignores to a set of whitespace-delimited globs
 ### which Subversion will ignore in its 'status' output.
-global-ignores = *.class *.bak target *.tmp *.swp *.launch
+global-ignores = *.class *.bak target *.tmp *.swp *.launch *~
 ### Set log-encoding to the default encoding for log messages
 # log-encoding = latin1
 ### Set use-commit-times to make checkout/update/switch/revert
@@ -165,7 +165,9 @@ abs-menulinks = svn:eol-style=native;svn:mime-type=text/plain
 *.m = svn:eol-style=native;svn:mime-type=text/plain
 *.m4 = svn:eol-style=native;svn:mime-type=text/plain
 *.manifest = svn:eol-style=native;svn:mime-type=text/plain
-*.markdown = svn:eol-style=native;svn:mime-type=text/plain
+*.markdown = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.md = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
+*.md.vm = svn:eol-style=native;svn:mime-type=text/plain;svn:keywords=Author Date Id Revision
 *.meta = svn:eol-style=native;svn:mime-type=text/plain
 *.mf = svn:eol-style=native;svn:mime-type=text/plain
 *.MF = svn:eol-style=native;svn:mime-type=text/plain

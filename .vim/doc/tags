@@ -35,6 +35,7 @@
 :CVSWatchOn	vcscommand.txt	/*:CVSWatchOn*
 :CVSWatchRemove	vcscommand.txt	/*:CVSWatchRemove*
 :CVSWatchers	vcscommand.txt	/*:CVSWatchers*
+:EditorConfigReload	editorconfig.txt	/*:EditorConfigReload*
 :MatchDebug	matchit.txt	/*:MatchDebug*
 :TlistAddFiles	taglist.txt	/*:TlistAddFiles*
 :TlistAddFilesRecursive	taglist.txt	/*:TlistAddFilesRecursive*
@@ -69,6 +70,7 @@
 :VCSUnlock	vcscommand.txt	/*:VCSUnlock*
 :VCSUpdate	vcscommand.txt	/*:VCSUpdate*
 :VCSVimDiff	vcscommand.txt	/*:VCSVimDiff*
+EditorConfig#AddNewHook()	editorconfig.txt	/*EditorConfig#AddNewHook()*
 EnhComm-Bugs	EnhancedCommentify.txt	/*EnhComm-Bugs*
 EnhComm-Credits	EnhancedCommentify.txt	/*EnhComm-Credits*
 EnhComm-EnhCommentify	EnhancedCommentify.txt	/*EnhComm-EnhCommentify*
@@ -129,7 +131,19 @@ b:match_wholeBR	matchit.txt	/*b:match_wholeBR*
 b:match_word	matchit.txt	/*b:match_word*
 b:match_words	matchit.txt	/*b:match_words*
 cvscommand-changes	vcscommand.txt	/*cvscommand-changes*
+editorconfig-advanced	editorconfig.txt	/*editorconfig-advanced*
+editorconfig-commands	editorconfig.txt	/*editorconfig-commands*
+editorconfig-contents	editorconfig.txt	/*editorconfig-contents*
+editorconfig-hook	editorconfig.txt	/*editorconfig-hook*
+editorconfig-installation	editorconfig.txt	/*editorconfig-installation*
+editorconfig-overview	editorconfig.txt	/*editorconfig-overview*
+editorconfig-settings	editorconfig.txt	/*editorconfig-settings*
+editorconfig.txt	editorconfig.txt	/*editorconfig.txt*
 g%	matchit.txt	/*g%*
+g:EditorConfig_core_mode	editorconfig.txt	/*g:EditorConfig_core_mode*
+g:EditorConfig_exec_path	editorconfig.txt	/*g:EditorConfig_exec_path*
+g:EditorConfig_python_files_dir	editorconfig.txt	/*g:EditorConfig_python_files_dir*
+g:EditorConfig_verbose	editorconfig.txt	/*g:EditorConfig_verbose*
 g:perldoc_flags	perl_doc.txt	/*g:perldoc_flags*
 g:perldoc_program	perl_doc.txt	/*g:perldoc_program*
 g:snippets_dir	snipMate.txt	/*g:snippets_dir*
