@@ -16,7 +16,7 @@ set si
 set laststatus=2
 set statusline=%f\ %h%m%r[%1*%{fugitive#statusline()}%*]%<%=%-14.(%l,%c%V%)\ %P
 
-if has("win32")
+if has("win32") || has("mac")
     set guifont=DPCustomMono2:h8
 else
     set guifont=DPCustomMono2\ 8
@@ -93,3 +93,11 @@ map <M-g> <C-W>H
 map <M-l> <C-W>L
 
 set secure
+
+"table-mode configuration
+let g:table_mode_verbose=1
+let g:table_mode_header_fillchar='='
+let g:table_mode_corner_corner='+'
+
+"markdown configuration
+let g:markdown_fenced_languages = [ 'javascript', 'scala', 'java' ]

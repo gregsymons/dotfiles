@@ -2,8 +2,9 @@
 
 
 #only works in Linux, but I don't need to be portable here.
-MY_EXE=`readlink -f $0`
-MY_DIR=`dirname ${MY_EXE}`
+#MY_EXE=`readlink -f $0`
+#MY_DIR=`dirname ${MY_EXE}`
+MY_DIR=/Users/gsymons/dotfiles
 
 echo Discovered install directory: ${MY_DIR}
 

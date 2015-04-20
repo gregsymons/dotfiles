@@ -1,8 +1,5 @@
-source ~/.aws/credentials
-export AWS_ACCESS_KEY_ID=$AWSAccessKeyId
-export AWS_SECRET_ACCESS_KEY=$AWSSecretKey
-export AWS_CREDENTIAL_FILE=~/.aws/credentials
-export PATH=${PATH}:/opt/Pandora/bin:~/.gem/bin
+export PATH=/usr/local/bin:${HOME}/bin:${PATH}
+export EDITOR=vim
 
 alias ::='cd ..'
 alias :::='cd ../..'
@@ -10,9 +7,6 @@ alias ::::='cd ../../..'
 alias :::::='cd ../../../..'
 alias ::::::='cd ../../../../..'
 alias :::::::='cd ../../../../../..'
-
-. ~/.nvm/nvm.sh
-. /etc/profile
-. /etc/default/locale
+alias g=git
 
 # vim:ft=sh
