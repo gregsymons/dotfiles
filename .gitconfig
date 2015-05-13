@@ -1,7 +1,7 @@
 [user]
     name=Greg Symons
-    email=gsymons@drillinginfo.com
-    signingkey=0x8E36B9A3
+    email=gsymons@gsconsulting.biz
+    signingkey=E5A3A7DB
 [alias]
     co=checkout
     ci=commit
@@ -13,7 +13,5 @@
     excludesfile = ~/.gitignore
 [color]
 	ui = auto
-[hub]
-	host = git.drillinginfo.com
 [push]
 	default = upstream
