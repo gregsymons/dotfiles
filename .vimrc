@@ -6,9 +6,9 @@ syntax on
 filetype plugin indent on
 
 set et
-set ts=4
-set sw=4
-set tw=80
+set ts=2
+set sw=2
+set tw=132
 set bs=eol,indent,start
 set ruler
 set ai
@@ -29,7 +29,7 @@ set exrc
 let g:local_vimrc = '.vimrc.local'
 
 imap <C-F>  <Esc>gUiw`]a
-colorscheme oceandeep
+colorscheme Tomorrow-Night-Bright
 
 function! EditFileFromClipboard()
    let fname = getreg('+')
