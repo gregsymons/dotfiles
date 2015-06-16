@@ -1,0 +1,14 @@
+
+[auth]
+fathom.prefix = https://hg.gwfathom.com
+fathom.username = greg.symons
+
+[extensions]
+mercurial_keyring = 
+graphlog = 
+hgk =
+record = 
+purge =
+
+[ui]
+username = Greg Symons <greg.symons@gwfathom.com>
