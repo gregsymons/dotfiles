@@ -19,3 +19,6 @@
 [submodule ".vim/bundle/vim-lawrencium"]
 	path = .vim/bundle/vim-lawrencium
 	url = git@github.com:ludovicchabant/vim-lawrencium
+[submodule ".vim/bundle/dockerfile.vim"]
+	path = .vim/bundle/dockerfile.vim
+	url = https://github.com/ekalinin/Dockerfile.vim
