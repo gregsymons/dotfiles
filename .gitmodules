@@ -22,3 +22,6 @@
 [submodule ".vim/bundle/dockerfile.vim"]
 	path = .vim/bundle/dockerfile.vim
 	url = https://github.com/ekalinin/Dockerfile.vim
+[submodule ".vim/bundle/vim-hashicorp-tools"]
+	path = .vim/bundle/vim-hashicorp-tools
+	url = git@github.com:hashivim/vim-hashicorp-tools
