@@ -1,5 +1,7 @@
 export PATH=/usr/local/bin:${HOME}/bin:${PATH}
 export EDITOR=vim
+export AWS_KEYCHAIN_FILE=${HOME}/Library/Keychains/aws-keychain.keychain-db
+export NVM_CMD=${NVM_CMD:-$(brew --prefix)/opt/nvm/nvm.sh}
 
 alias ::='cd ..'
 alias :::='cd ../..'
@@ -9,4 +11,24 @@ alias ::::::='cd ../../../../..'
 alias :::::::='cd ../../../../../..'
 alias g=git
 
+if which nvim > /dev/null; then alias vim=nvim; fi
+
+if which pyenv > /dev/null; then
+  echo Initializing pyenv
+  eval "$(pyenv init -)"
+fi
+
+if which pyenv-virtualenv-init > /dev/null; then 
+  echo Initializing pyenv-virtualenv
+  eval "$(pyenv virtualenv-init -)"; 
+fi
+
+if [[ -f ${NVM_CMD} ]]; then
+  echo Initializing nvm
+  export NVM_DIR="${HOME}/.nvm"
+  [[ -d "${NVM_DIR}" ]] || mkdir -p ${NVM_DIR}
+  source ${NVM_CMD}
+fi
+
+__git_complete g __git_main
 # vim:ft=sh
