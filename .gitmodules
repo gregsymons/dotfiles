@@ -25,3 +25,6 @@
 [submodule ".vim/bundle/vim-hashicorp-tools"]
 	path = .vim/bundle/vim-hashicorp-tools
 	url = git@github.com:hashivim/vim-hashicorp-tools
+[submodule ".vim/bundle/ansible-vim"]
+	path = .vim/bundle/ansible-vim
+	url = git@github.com:pearofducks/ansible-vim
