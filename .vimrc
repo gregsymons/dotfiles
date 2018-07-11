@@ -21,6 +21,7 @@ if has("win32") || has("mac")
 else
     set guifont=DPCustomMono2\ 8
 endif
+
 set grepprg=grep\ -n
 set autowrite
 set nocp
@@ -83,14 +84,34 @@ endif
 
 nmap vK :call VerticalHelp()<Return>
 nmap <M-S-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<Return>
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-map <M-j> <C-W>J
-map <M-k> <C-W>K
-map <M-g> <C-W>H
-map <M-l> <C-W>L
+
+if has("nvim")
+tnoremap <C-j> <C-\><C-N><C-W>j
+tnoremap <C-k> <C-\><C-N><C-W>k
+tnoremap <C-h> <C-\><C-N><C-W>h
+tnoremap <C-l> <C-\><C-N><C-W>l
+tnoremap <M-j> <C-\><C-N><C-W>J
+tnoremap <M-k> <C-\><C-N><C-W>K
+tnoremap <M-g> <C-\><C-N><C-W>H
+tnoremap <M-l> <C-\><C-N><C-W>L
+endif
+
+inoremap <C-j> <C-\><C-N><C-W>j
+inoremap <C-k> <C-\><C-N><C-W>k
+inoremap <C-h> <C-\><C-N><C-W>h
+inoremap <C-l> <C-\><C-N><C-W>l
+inoremap <M-j> <C-\><C-N><C-W>J
+inoremap <M-k> <C-\><C-N><C-W>K
+inoremap <M-g> <C-\><C-N><C-W>H
+inoremap <M-l> <C-\><C-N><C-W>L
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-h> <C-W>h
+nnoremap <C-l> <C-W>l
+nnoremap <M-j> <C-W>J
+nnoremap <M-k> <C-W>K
+nnoremap <M-g> <C-W>H
+nnoremap <M-l> <C-W>L
 
 set secure
 

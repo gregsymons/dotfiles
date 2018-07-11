@@ -1,6 +1,6 @@
 [user]
-    name=Greg Symons
-    email=gsymons@affinipay.com
+	name = Greg Symons
+	email = gsymons@affinipay.com
     signingkey=5836822F
 [alias]
     co=checkout
@@ -9,9 +9,30 @@
     rb=!bash -c '"export BRANCH=$1; export REMOTE=${2:-origin}; echo Creating branch $BRANCH on remote $REMOTE &&  git checkout -b $BRANCH && git push -u $REMOTE $BRANCH"' $1 $2
     missing=!bash -c '"git cherry -v $1 $2 $3 | grep ^+ || echo No missing changesets"' $1 $2 $3
     br=branch
+    pf=push --force-with-lease
+    cA=commit --amend -CHEAD
+    dmerged=!bash -c '"export BRANCH=${1:-master}; export CURRENT_BRANCH=$(git symbolic-ref --short HEAD); git checkout $BRANCH; git branch --merged | grep -vE \"master|qa|parked|production\" | xargs git branch -d; git checkout $CURRENT_BRANCH"' $1
+    fixup=commit --fixup
 [core]
-    excludesfile = ~/.gitignore
+	excludesfile = /Users/gsymons/.gitignore
 [color]
 	ui = auto
 [push]
 	default = upstream
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/gsymons/.stCommitMsg
+[diff "ansible-vault-prod"]
+	textconv = ENV=prod ansible-vault --vault-password-file=~/work/deploy/ansible-vault-keychain view
+[diff "ansible-vault-qa"]
+	textconv = ENV=qa ansible-vault --vault-password-file=~/work/deploy/ansible-vault-keychain view
+[diff "ansible-vault-cde"]
+	textconv = ENV=cde ansible-vault --vault-password-file=~/work/deploy/ansible-vault-keychain view
+[merge "ansible-vault"]
+	name = ansible-vault merge driver
+	driver = /Users/gsymons/work/deploy/ansible-vault-merge %O %A %B %P
