@@ -25,3 +25,6 @@
 [submodule ".vim/bundle/ansible-vim"]
 	path = .vim/bundle/ansible-vim
 	url = git@github.com:pearofducks/ansible-vim
+[submodule ".vim/bundle/vim-lsc"]
+	path = .vim/bundle/vim-lsc
+	url = git@github.com:natebosch/vim-lsc
