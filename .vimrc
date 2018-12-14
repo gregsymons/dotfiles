@@ -116,9 +116,9 @@ nnoremap <M-l> <C-W>L
 set secure
 
 "table-mode configuration
-let g:table_mode_verbose=1
-let g:table_mode_header_fillchar='='
-let g:table_mode_corner_corner='+'
+let g:table_mode_header_fillchar='-'
+let g:table_mode_corner_corner='|'
+let g:table_mode_corner='|'
 
 "markdown configuration
 let g:markdown_fenced_languages = [ 'javascript', 'scala', 'java' ]

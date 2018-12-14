@@ -7,3 +7,4 @@
 *.m4
 .*sw*
 *.pyc
+.DS_Store

@@ -13,6 +13,9 @@
     cA=commit --amend -CHEAD
     dmerged=!bash -c '"export BRANCH=${1:-master}; export CURRENT_BRANCH=$(git symbolic-ref --short HEAD); git checkout $BRANCH; git branch --merged | grep -vE \"master|qa|parked|production\" | xargs git branch -d; git checkout $CURRENT_BRANCH"' $1
     fixup=commit --fixup
+    fm=fetch origin master:master
+    fp=fetch --prune
+    bitbucket=!bash -c 'git clone git@bitbucket.org:$@' $@ 
 [core]
 	excludesfile = /Users/gsymons/.gitignore
 [color]
