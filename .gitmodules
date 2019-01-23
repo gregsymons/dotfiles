@@ -28,3 +28,6 @@
 [submodule ".vim/bundle/vim-lsc"]
 	path = .vim/bundle/vim-lsc
 	url = git@github.com:natebosch/vim-lsc
+[submodule ".vim/bundle/editorconfig-vim"]
+	path = .vim/bundle/editorconfig-vim
+	url = git@github.com:editorconfig/editorconfig-vim
