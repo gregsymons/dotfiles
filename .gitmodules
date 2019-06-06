@@ -31,3 +31,6 @@
 [submodule ".vim/bundle/editorconfig-vim"]
 	path = .vim/bundle/editorconfig-vim
 	url = git@github.com:editorconfig/editorconfig-vim
+[submodule ".vim/bundle/vim-drawit"]
+	path = .vim/bundle/vim-drawit
+	url = git@github.com:vim-scripts/DrawIt
