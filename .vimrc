@@ -83,6 +83,7 @@ if !exists("my_autocommands")
    augroup end
 endif
 
+au BufRead,BufNewFile *.sbt set ft=scala
 
 nmap vK :call VerticalHelp()<Return>
 nmap <M-S-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<Return>
@@ -123,4 +124,14 @@ let g:table_mode_corner_corner='|'
 let g:table_mode_corner='|'
 
 "markdown configuration
-let g:markdown_fenced_languages = [ 'javascript', 'scala', 'java' ]
+let g:markdown_fenced_languages = [ 'javascript', 'scala', 'java', 'sql', 'yaml' ]
+
+"lsc configuration
+let g:lsc_enable_autocomplete = v:false
+let g:lsc_server_commands = {
+  \ 'scala': 'metals-vim'
+  \}
+let g:lsc_auto_map = {
+  \ 'GoToDefinition': 'gd',
+  \}
+let g:lsc_trace_level = 'verbose'

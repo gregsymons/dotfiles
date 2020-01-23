@@ -8,3 +8,5 @@
 .*sw*
 *.pyc
 .DS_Store
+.metals
+.bloop
