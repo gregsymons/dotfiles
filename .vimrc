@@ -14,6 +14,8 @@ set ruler
 set ai
 set si
 set laststatus=2
+set number
+set relativenumber
 set statusline=%f\ %h%m%r[%1*%{fugitive#statusline()}%*]%<%=%-14.(%l,%c%V%)\ %P
 
 if has("win32") || has("mac")
