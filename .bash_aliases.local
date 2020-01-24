@@ -16,7 +16,11 @@ function vpn() {
 }
 
 function vpn-disconnect() {
-  osascript -e "tell application \"Viscosity\" to disconnect \"$1\""
+  if [[ -n $1 ]]; then
+    osascript -e "tell application \"Viscosity\" to disconnect \"$1\""
+  else
+    vpn-disconnect-all
+  fi
 }
 
 function vpn-disconnect-all() {
@@ -26,7 +30,20 @@ function vpn-disconnect-all() {
 function remove-ssh-keys() {
   for host in $@; do
     ssh-keygen -R $host
+    ssh-keygen -R $(dig +short $host)
   done
+}
+
+function prod_vault() {
+  export VAULT_ADDR=https://consul1.internal.affinipay.com:8200
+  export VAULT_CACERT=${DEPLOY_ROOT}/terraform/aws/prod/files/cacerts/affinipay-prod-root-ca.crt
+  export VAULT_ENVIRON=prod
+}
+
+function qa_vault() {
+  export VAULT_ADDR=https://consul1.qa.affinipay.com:8200
+  export VAULT_CACERT=${DEPLOY_ROOT}/terraform/aws/qa/files/cacerts/affinipay-qa-root-ca.crt
+  export VAULT_ENVIRON=qa
 }
 
 urlencode() {
@@ -54,4 +71,11 @@ urldecode() {
 }
 
 __git_complete g __git_main
+
+alias k=wrapped_kubectl
+alias kc=kubectx
+alias kns=kubens
+
+complete -F _kube_contexts kc
+complete -o default -F __start_kubectl k
 # vim:ft=sh
