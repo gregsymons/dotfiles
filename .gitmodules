@@ -34,3 +34,6 @@
 [submodule ".vim/bundle/vim-drawit"]
 	path = .vim/bundle/vim-drawit
 	url = git@github.com:vim-scripts/DrawIt
+[submodule ".vim/bundle/vim-emoji"]
+	path = .vim/bundle/vim-emoji
+	url = git@github.com:junegunn/vim-emoji
