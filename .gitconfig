@@ -6,13 +6,25 @@
     co=checkout
     ci=commit
     st=status
-    rb=!bash -c '"export BRANCH=$1; export REMOTE=${2:-origin}; echo Creating branch $BRANCH on remote $REMOTE &&  git checkout -b $BRANCH && git push -u $REMOTE $BRANCH"' $1 $2
+    rb="!f() {                    \
+      set -x;                     \
+      echo $@;                    \
+      export BRANCH=$1;           \
+      export REMOTE=${2:-origin}; \
+      BASE=${3:-$(git remote-head)};          \
+      echo Creating branch $BRANCH on remote $REMOTE off of $BASE &&  \
+      git checkout -b $BRANCH $BASE                               &&  \
+      git push -u $REMOTE $BRANCH;                                    \
+    }; f"
     missing=!bash -c '"git cherry -v $1 $2 $3 | grep ^+ || echo No missing changesets"' $1 $2 $3
     br=branch
     pf=push --force-with-lease
     cA=commit --amend -CHEAD
-    dmerged=!bash -c '"export BRANCH=${1:-master}; export CURRENT_BRANCH=$(git symbolic-ref --short HEAD); git checkout $BRANCH; git branch --merged | grep -vE \"master|qa|parked|production\" | xargs git branch -d; git checkout $CURRENT_BRANCH"' $1
+    remote-head=!bash -c '"export REMOTE=${1:-origin}; git remote show $REMOTE | grep \"HEAD branch\" | cut -d \":\" -f 2 | tr -d \"[:space:]\"; echo"' $1
+    dmerged=!~/.git_aliases/dmerged $1
+    dremote=!~/.git_aliases/dremote $@
     fixup=commit --fixup
+    rbi=rebase -i --autosquash
     fm=fetch origin master:master
     fp=fetch --prune
     bitbucket=!bash -c 'git clone git@bitbucket.org:$@' $@ 
@@ -39,3 +51,8 @@
 [merge "ansible-vault"]
 	name = ansible-vault merge driver
 	driver = /Users/gsymons/work/deploy/ansible-vault-merge %O %A %B %P
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

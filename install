@@ -15,12 +15,14 @@ if [[ -f ${SETTINGS_FILE} ]]; then
     . ${SETTINGS_FILE}
 fi
 
+# FILE[;DEST]
 LN_FILES="${LN_FILES} 
             .vimrc 
             .vim 
             .bash_aliases 
             .bash_aliases.local 
             .gitconfig 
+            .git_aliases
             gitignore;.gitignore
             .autotest
             subversion/config;.subversion/config

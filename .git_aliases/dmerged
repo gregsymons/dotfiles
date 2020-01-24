@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+REMOTE_HEAD=$(git remote-head)
+BRANCH=${1:-${REMOTE_HEAD#origin/}}
+CURRENT_BRANCH=$(git symbolic-ref --short HEAD)
+
+git checkout $BRANCH
+git branch --merged | grep -vE '^\*?[[:space:]]*($BRANCH|master|qa|parked|production|series/.*)$' | xargs git branch -d
+git checkout $CURRENT_BRANCH
+

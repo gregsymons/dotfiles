@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+declare -a argv
+
+function filter_protected_branches() {
+  grep -vE "origin/(HEAD -> .*|master|qa|parked|production|series/.*)$" || echo
+}
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --dry-run|-d)
+      DRY_RUN=yes
+      shift
+      ;;
+    --include-diverged|-D)
+      DIVERGED=yes
+      shift
+      ;;
+    *)
+      argv[${#argv[@]}] = $1
+      shift
+      ;;
+  esac
+done
+
+
+REMOTE_HEAD=$(git remote-head)
+BRANCH=${argv[0]:-${REMOTE_HEAD#origin/}}
+CURRENT_BRANCH=$(git symbolic-ref --short HEAD)
+
+git checkout $BRANCH
+
+TO_DELETE=$(git branch --remote --merged | filter_protected_branches)
+
+if [[ ${DIVERGED:-no} == "yes" ]]; then
+  UNMERGED_REMOTES=$(git branch --remote --no-contains ${REMOTE_HEAD} | filter_protected_branches)
+
+  TO_DELETE=$(echo -n ${TO_DELETE} ${UNMERGED_REMOTES} | tr '[:space:]' '\n' | sort | uniq)
+fi
+
+
+if [[ ${DRY_RUN:-no} == "yes" ]]; then
+  echo "Dry run mode enabled. The following branches would be deleted:"
+  for branch in $TO_DELETE; do
+    echo "   $branch"
+  done
+else
+  git push origin ${TO_DELETE//origin\//:}
+fi
+
+git checkout $CURRENT_BRANCH
